@@ -109,7 +109,7 @@ const SpaceCore = (() => {
 </script>
 <script id="space-app">
 'use strict';
-const C=SpaceCore, $=s=>document.querySelector(s), $=s=>[...document.querySelectorAll(s)];
+const C=SpaceCore, $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const canvas=$('#space'), ctx=canvas.getContext('2d'), modal=$('#modal'), body=$('#modalBody');
 const storageKey='starlight-expedition-v1';
 let save=C.cleanSave(null), storageOK=true;
@@ -147,7 +147,7 @@ function setCourse(id){
   selected=id;overview=false;$('#map').textContent='전체 항로 보기 ⤢';$('#map').setAttribute('aria-pressed','false');
   target={x:d.x,y:d.y+d.r+43,d};
   const region=d.id==='moon'?'moon':d.id==='stars'?'stars':'solar';
-  $('[data-region]').forEach(b=>b.classList.toggle('active',b.dataset.region===region));
+  $$('[data-region]').forEach(b=>b.classList.toggle('active',b.dataset.region===region));
   $('#regionLabel').textContent=region==='moon'?'LUNAR OBSERVATORY':region==='stars'?'CONSTELLATION SECTOR':'SOLAR SYSTEM';
   $('#guideText').textContent=d.name+'으로 항해 중이에요. 도착 후 관측 버튼을 눌러 탐사 기록을 남겨 보세요.';
   $('#flightAnnouncement').textContent=d.name+'으로 자동 항해를 시작합니다.';
@@ -155,7 +155,7 @@ function setCourse(id){
   updateUI();updateNear();if(window.innerWidth<760)canvas.scrollIntoView({block:'center',behavior:reduced?'instant':'smooth'});
 }
 $('#missions').addEventListener('click',e=>{const b=e.target.closest('[data-target]');if(b)setCourse(b.dataset.target);});
-$('[data-region]').forEach(b=>b.onclick=()=>setCourse(b.dataset.region==='solar'?'earth':b.dataset.region));
+$$('[data-region]').forEach(b=>b.onclick=()=>setCourse(b.dataset.region==='solar'?'earth':b.dataset.region));
 $('#map').onclick=()=>{overview=!overview;$('#map').textContent=overview?'우주선 따라가기 ⤡':'전체 항로 보기 ⤢';$('#map').setAttribute('aria-pressed',String(overview));};
 $('#sound').onclick=()=>{sound=!sound;$('#sound').textContent=sound?'소리 켬':'소리 끔';$('#sound').setAttribute('aria-pressed',String(sound));$('#sound').setAttribute('aria-label',sound?'효과음 끄기':'효과음 켜기');beep();};
 function updateNear(){
@@ -178,7 +178,7 @@ document.addEventListener('keydown',e=>{
 document.addEventListener('keyup',e=>keys.delete(e.key.toLowerCase()));
 window.addEventListener('blur',()=>keys.clear());
 document.addEventListener('visibilitychange',()=>{keys.clear();last=0;});
-$('[data-dir]').forEach(b=>{
+$$('[data-dir]').forEach(b=>{
  const k={up:'arrowup',down:'arrowdown',left:'arrowleft',right:'arrowright'}[b.dataset.dir];
  b.onpointerdown=e=>{e.preventDefault();b.setPointerCapture(e.pointerId);keys.add(k);target=null;};
  b.onpointerup=b.onpointercancel=b.onlostpointercapture=()=>keys.delete(k);
@@ -278,7 +278,7 @@ function observe(d){
 function moonLab(){return '<section class="lab"><h3>실험 01 · 달의 모양 관찰</h3><p>서로 다른 모양 3개를 골라 관찰하세요. 북반구에서 보는 모양을 단순화했어요.</p><div class="phase-layout"><div class="phase-view"><canvas id="phaseCanvas" width="280" height="250" aria-label="선택한 달의 위치와 지구에서 본 모양"></canvas><strong id="phaseName"></strong></div><div class="phase-buttons">'+C.phaseNames.map((n,i)=>'<button data-phase="'+i+'">'+n+'</button>').join('')+'</div></div><p id="phaseNote" role="status"></p></section>';}
 function setupMoon(){
  $('#beginQuiz').disabled=true;
- $('[data-phase]').forEach(b=>b.onclick=()=>{const p=Number(b.dataset.phase);inspected.add(p);drawPhase(p);$('[data-phase]').forEach(x=>x.classList.toggle('selected',x===b));$('#phaseNote').textContent='관찰한 모양 '+inspected.size+' / 3 · '+(p===0?'삭은 밝은 쪽이 지구 반대쪽을 향해 거의 보이지 않아요.':p===4?'보름달은 지구에서 밝은 면이 둥글게 보여요.':p===2?'상현달은 오른쪽 절반이 밝게 보여요.':p===6?'하현달은 왼쪽 절반이 밝게 보여요.':'달의 실제 모양은 항상 둥근 공이에요.');$('#beginQuiz').disabled=inspected.size<3;});
+ $$('[data-phase]').forEach(b=>b.onclick=()=>{const p=Number(b.dataset.phase);inspected.add(p);drawPhase(p);$$('[data-phase]').forEach(x=>x.classList.toggle('selected',x===b));$('#phaseNote').textContent='관찰한 모양 '+inspected.size+' / 3 · '+(p===0?'삭은 밝은 쪽이 지구 반대쪽을 향해 거의 보이지 않아요.':p===4?'보름달은 지구에서 밝은 면이 둥글게 보여요.':p===2?'상현달은 오른쪽 절반이 밝게 보여요.':p===6?'하현달은 왼쪽 절반이 밝게 보여요.':'달의 실제 모양은 항상 둥근 공이에요.');$('#beginQuiz').disabled=inspected.size<3;});
  drawPhase(0);$('#phaseNote').textContent='버튼을 눌러 모양 3개를 관찰하면 퀴즈가 열려요.';
 }
 function drawPhase(p){
@@ -301,17 +301,17 @@ function setupEarth(){
 function starLab(){return '<section class="lab"><h3>실험 02 · 별자리 이어 보기</h3><p>계절을 고르고 번호 순서대로 별을 눌러 보세요. 하나를 완성한 뒤 북극성을 찾아보세요.</p><div class="season-tabs">'+Object.keys(C.seasonStars).map(s=>'<button data-season="'+s+'">'+s+'</button>').join('')+'</div><strong id="constellationName"></strong><div id="starBoard" class="star-board"></div><p id="starNote" role="status"></p><div class="polaris"><h3>북쪽의 길잡이 찾기</h3><p>북두칠성의 국자 끝 두 별을 잇는 방향으로 약 5배 연장하면 북극성을 찾을 수 있어요. 아래 모형의 후보 중 골라보세요.</p><svg viewBox="0 0 300 135" role="img" aria-label="북두칠성의 끝 두 별이 세로로 18만큼 떨어져 있습니다. 아래 별에서 위 별 방향으로 약 다섯 배 연장한 위쪽 후보 A가 북극성입니다."><path d="M30 110 L55 100 L78 106 L103 99 L135 100 L135 118 L103 118 L103 99" fill="none" stroke="#a5b8dd"/><path d="M135 100 L135 10" stroke="#a8f0cc" stroke-dasharray="3 4"/><g fill="#dfebff"><circle cx="30" cy="110" r="3"/><circle cx="55" cy="100" r="3"/><circle cx="78" cy="106" r="3"/><circle cx="103" cy="99" r="3"/><circle cx="135" cy="100" r="3"/><circle cx="135" cy="118" r="3"/><circle cx="103" cy="118" r="3"/><circle cx="135" cy="10" r="4"/><circle cx="240" cy="55" r="4"/><circle cx="220" cy="115" r="4"/></g><g fill="#b5c6e4" font-size="11"><text x="145" y="15">A</text><text x="250" y="59">B</text><text x="230" y="119">C</text><text x="150" y="65">약 5배</text></g></svg><div class="polar-choices"><button data-polar="A">A 별</button><button data-polar="B">B 별</button><button data-polar="C">C 별</button></div><p id="polarNote" role="status">별의 간격과 밝기는 설명을 위한 모형이에요.</p></div></section>';}
 function setupStars(){
  $('#beginQuiz').disabled=true;
- $('[data-season]').forEach(b=>b.onclick=()=>drawConstellation(b.dataset.season));
- $('[data-polar]').forEach(b=>b.onclick=()=>{if(b.dataset.polar==='A'){northFinished=true;$('#polarNote').textContent='맞아요! 북극성은 북쪽 방향을 알려줘요. 밤하늘에서 가장 밝은 별은 아니에요.';beep(700);}else{$('#polarNote').textContent='국자 끝 두 별의 방향을 따라 위쪽으로 연장해 보세요.';}$('#beginQuiz').disabled=!(starFinished&&northFinished);});
+ $$('[data-season]').forEach(b=>b.onclick=()=>drawConstellation(b.dataset.season));
+ $$('[data-polar]').forEach(b=>b.onclick=()=>{if(b.dataset.polar==='A'){northFinished=true;$('#polarNote').textContent='맞아요! 북극성은 북쪽 방향을 알려줘요. 밤하늘에서 가장 밝은 별은 아니에요.';beep(700);}else{$('#polarNote').textContent='국자 끝 두 별의 방향을 따라 위쪽으로 연장해 보세요.';}$('#beginQuiz').disabled=!(starFinished&&northFinished);});
  drawConstellation('겨울');
 }
 function drawConstellation(season){
  const data=C.seasonStars[season], points=data.points.filter((p,i,a)=>a.findIndex(q=>q[0]===p[0]&&q[1]===p[1])===i);let count=0;
- $('[data-season]').forEach(b=>b.classList.toggle('selected',b.dataset.season===season));
+ $$('[data-season]').forEach(b=>b.classList.toggle('selected',b.dataset.season===season));
  $('#constellationName').textContent=data.name;$('#starNote').textContent=data.note+' · 1번 별부터 연결하세요.';
  const board=$('#starBoard');
  board.innerHTML='<svg viewBox="0 0 100 100" preserveAspectRatio="none"><polyline id="starLine" points="" fill="none" stroke="#a8f0cc" stroke-width=".5"/></svg>'+points.map((p,i)=>'<button class="star-node" data-star="'+i+'" style="left:'+p[0]*100+'%;top:'+p[1]*100+'%" aria-label="'+(i+1)+'번 별">'+(i+1)+'</button>').join('');
- $('[data-star]').forEach(b=>b.onclick=()=>{
+ $$('[data-star]').forEach(b=>b.onclick=()=>{
  const n=Number(b.dataset.star);if(n!==count){$('#starNote').textContent=(count+1)+'번 별을 찾아 순서대로 연결해 보세요.';return;}
  b.classList.add('hit');count++;beep(450+count*70);
  $('#starLine').setAttribute('points',points.slice(0,count).map(p=>p[0]*100+','+p[1]*100).join(' '));
@@ -323,23 +323,23 @@ function showQuiz(d){
  const area=$('#quizArea');
  area.innerHTML='<section class="quiz-box"><span class="eyebrow">MISSION CHECK</span><h3>'+d.question+'</h3><div class="answers">'+d.options.map((o,i)=>'<button data-answer="'+i+'"><span class="key">'+(i+1)+'</span> '+o+'</button>').join('')+'</div><div id="answerFeedback" role="status"></div></section>';
  $('#beginQuiz').hidden=true;
- $('[data-answer]').forEach(b=>b.onclick=()=>{
+ $$('[data-answer]').forEach(b=>b.onclick=()=>{
  const right=Number(b.dataset.answer)===d.answer;
  b.classList.add(right?'correct':'wrong');
  if(!right){$('#answerFeedback').className='feedback retry';$('#answerFeedback').textContent='다시 관찰해 볼까요? 위의 탐사 기록에서 단서를 찾아보세요. 틀려도 점수는 줄어들지 않아요.';beep(220);return;}
  const first=!save.done.includes(d.id);save=C.award(save,d.id);persist();beep(850);
- $('[data-answer]').forEach(x=>x.disabled=true);
+ $$('[data-answer]').forEach(x=>x.disabled=true);
  $('#answerFeedback').className='feedback good';$('#answerFeedback').textContent=(first?'탐사 성공! +100 XP · ':'복습 성공! · ')+d.why;
  if(save.done.length===11&&first)toast('모든 탐사를 마쳤어요! 은하 탐험가 배지를 획득했어요.');
  const next=C.destinations.find(x=>!save.done.includes(x.id));
  const btn=document.createElement('button');btn.className='primary';btn.style.marginTop='15px';btn.textContent=next?'다음 탐사: '+next.name+' →':'탐사 도감 확인 →';btn.onclick=()=>{if(next){closeModal();setCourse(next.id);}else openJournal();};area.appendChild(btn);
  });
  area.scrollIntoView({block:'nearest',behavior:reduced?'instant':'smooth'});
- $('[data-answer]')[0].focus();
+ $$('[data-answer]')[0].focus();
 }
 function openJournal(){
  openModal('우리의 우주, 나의 발견','EXPEDITION ARCHIVE','<p class="muted small">완료한 천체를 눌러 복습할 수 있어요. 아직 만나지 않은 천체를 누르면 항해를 시작해요.</p><div class="feedback good" style="margin:0 0 20px">'+$('#rank').textContent+' · '+C.score(save)+' XP · '+save.done.length+'/11 탐사 완료</div><div class="collection">'+C.destinations.map(d=>'<button class="collection-item '+(save.done.includes(d.id)?'':'locked')+'" data-journal="'+d.id+'"><span class="mini-orb" style="background:'+d.color+'"></span><strong>'+d.name+'</strong><small>'+(save.done.includes(d.id)?'✓ 탐사 완료 · 복습하기':'미탐사 · 항해하기')+'</small></button>').join('')+'</div>');
- $('[data-journal]').forEach(b=>b.onclick=()=>{const d=C.destinations.find(d=>d.id===b.dataset.journal);if(save.done.includes(d.id))observe(d);else{closeModal();setCourse(d.id);}});
+ $$('[data-journal]').forEach(b=>b.onclick=()=>{const d=C.destinations.find(d=>d.id===b.dataset.journal);if(save.done.includes(d.id))observe(d);else{closeModal();setCourse(d.id);}});
 }
 $('#journal').onclick=openJournal;
 function help(){openModal('우주선 조종 안내','FLIGHT MANUAL','<div class="help-grid"><article><h3>01 · 목적지로 항해</h3><p>목적지 목록이나 지도 위 천체를 누르면 자동 항해해요. 방향키 또는 WASD로 직접 조종할 수도 있어요. 모바일은 화면의 방향 버튼을 사용하세요.</p></article><article><h3>02 · 가까이에서 관측</h3><p>천체 가까이에 도착하면 관측 시작 또는 E를 누르세요. 관찰 기록을 읽고 실험한 뒤 퀴즈를 풀면 탐사가 완료돼요.</p></article><article><h3>03 · 자료와 배지 수집</h3><p>초록색 마름모 자료를 수집하면 10 XP! 처음 탐사를 완료하면 100 XP를 받아요. 모든 관측 지점을 완료하면 은하 탐험가가 돼요.</p></article><article><h3>04 · 소행성대 통과</h3><p>직접 조종할 때 소행성과 부딪히면 선체 표시가 줄어요. 3번 접촉하면 지구에서 수리해요. 탐사 기록은 사라지지 않아요. 자동 항해는 충돌을 보호해 줘요.</p></article></div><div class="feedback">시간 제한은 없어요. 틀린 문제는 다시 풀 수 있어요. 관측 창을 열면 비행은 잠시 멈춰요.</div>');}
@@ -352,7 +352,7 @@ $('#about').onclick=()=>{
 $('#order').onclick=()=>{
  const planets=C.destinations.slice(1,9),shuffled=[...planets].sort((a,b)=>['saturn','earth','neptune','mercury','jupiter','venus','uranus','mars'].indexOf(a.id)-['saturn','earth','neptune','mercury','jupiter','venus','uranus','mars'].indexOf(b.id));let index=0;
  openModal('흩어진 행성 항로 복원','BONUS CHALLENGE','<p>태양에서 가까운 순서대로 행성을 눌러 탐사 항로를 복원하세요.</p><div class="order-slots" id="orderSlots">☀ 태양</div><div class="order-choices">'+shuffled.map(d=>'<button data-order="'+d.id+'">'+d.name+'</button>').join('')+'</div><div class="feedback" id="orderFeedback" role="status">첫 번째 행성은 태양에 가장 가까워요.</div>');
- $('[data-order]').forEach(b=>b.onclick=()=>{if(b.dataset.order!==planets[index].id){$('#orderFeedback').textContent='다시 생각해 보세요. 다음 행성의 이름은 '+planets[index].name[0]+'(으)로 시작해요.';return;}b.disabled=true;$('#orderSlots').textContent+=' → '+planets[index].name;index++;beep(400+index*70);$('#orderFeedback').textContent=index===8?'항로 복원 성공! 수금지화목토천해, 멋진 항해였어요. 이 연습은 경험치를 중복 지급하지 않아요.':index+' / 8 연결 완료 · 다음 행성을 골라 주세요.';if(index===8)$('#orderFeedback').classList.add('good');});
+ $$('[data-order]').forEach(b=>b.onclick=()=>{if(b.dataset.order!==planets[index].id){$('#orderFeedback').textContent='다시 생각해 보세요. 다음 행성의 이름은 '+planets[index].name[0]+'(으)로 시작해요.';return;}b.disabled=true;$('#orderSlots').textContent+=' → '+planets[index].name;index++;beep(400+index*70);$('#orderFeedback').textContent=index===8?'항로 복원 성공! 수금지화목토천해, 멋진 항해였어요. 이 연습은 경험치를 중복 지급하지 않아요.':index+' / 8 연결 완료 · 다음 행성을 골라 주세요.';if(index===8)$('#orderFeedback').classList.add('good');});
 };
 updateUI();resize();updateNear();requestAnimationFrame(loop);
 if(!save.done.length&&!save.samples.length){
