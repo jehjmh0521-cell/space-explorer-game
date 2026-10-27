@@ -1,0 +1,14 @@
+Third-party software distributed with Space Expedition
+
+Three.js 0.162.0 — MIT License (three.txt)
+https://threejs.org/
+
+Nanum Myeongjo — SIL Open Font License 1.1 (nanum-myeongjo.txt)
+Distributed by @fontsource/nanum-myeongjo 5.2.8
+
+IBM Plex Sans KR — SIL Open Font License 1.1 (ibm-plex-sans-kr.txt)
+Distributed by @fontsource/ibm-plex-sans-kr 5.2.7
+
+The game independently implements space scenes and learning activities.
+Design/gameplay reference: https://dokdo-day-game.chaessam.workers.dev/
+No original reference game source, photos, or textbook scans are distributed.
