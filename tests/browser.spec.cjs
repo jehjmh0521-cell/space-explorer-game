@@ -5,7 +5,7 @@ test.beforeEach(async({page})=>{
 });
 test.afterEach(async({page})=>{expect(page.__errors).toEqual([]);});
 test('earth mission, wrong answer, reward, persistence and no duplicate rewards',async({page})=>{
- await page.locator('#scan').click();await page.locator('#rotation').fill('180');await expect(page.locator('#dayLabel')).toContainText('밤');
+ await page.locator('#scan').click();await page.locator('#rotation').focus();await page.keyboard.press('Home');for(let i=0;i<36;i++)await page.keyboard.press('ArrowRight');await expect(page.locator('#dayLabel')).toContainText('밤');
  await page.locator('#beginQuiz').click();await page.locator('[data-answer="2"]').click();await expect(page.locator('#answerFeedback')).toContainText('다시');
  await page.locator('[data-answer="0"]').click();await expect(page.locator('#xp')).toHaveText('✧ 100 XP');
  await page.reload();await expect(page.locator('#xp')).toHaveText('✧ 100 XP');
